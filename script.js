@@ -71,7 +71,7 @@ class setWriter{
 
 
 //Örnek Kullanım
-const deneme = new setWriter("Yazi1","Yazi2","İstediğiniz Kadar Yazi Ekleyebilirsiniz", "constreamtext", 100) //Sonda Verilen Değer Gecikme Süresidir
+const deneme = new setWriter("Yazi1","Yazi2","İstediğiniz Kadar Yazi Ekleyebilirsiniz", "elementID", 100) //Sonda Verilen Değer Gecikme Süresidir
 deneme.Start()
 
 
