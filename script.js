@@ -1,77 +1,114 @@
-//Author : Efe Türker
-
-class setWriter{
+class Writer{
     constructor(){
-        this.state= [{"check_status":0}]
-        this.arguments = arguments;
-        this.Check(arguments)
+        this.args = arguments;
+        this.ID   = arguments[arguments.length-2];
+        this.MS   = arguments[arguments.length-1];
+        this.texts   = []
+        this.denetle()
     }
-    Check(arg){
-        if(document.getElementById(this.arguments[this.arguments.length-2]) == null){
-            console.error("objectIdError: Element Not Found")
-            this.state[0].check_status++;
+    denetle(){
+        if(typeof(this.MS) != "number"){
+            console.error("msError: Please Give Number MS Value")
         }
-        if(arg.length <= 2){
-            console.error("missingArgError: Enter At Least 3 Parameters")
-            this.state[0].check_status++;
+        if(this.args.length<3){
+            console.error("argError: Please Give 3 Argument")
         }
-        if(typeof(arg[arg.length-1])!= "number"){
-            console.error("millisecondError: Enter a Number in Last Parameter");
-            this.state[0].check_status++;
+        if(document.getElementById(this.ID) == undefined){
+            console.error("idError: Element Not Found")
         }
-    }
-    Start(){
-        if(this.state[0].check_status == 0){
-            const texts   = [];
-            var   writed_text = 0;
-            var   timee    = 0;
-            var   statuss = "write";
-            var   milliseconds = this.arguments[this.arguments.length-1];
-    
-            for(var i =0; i<this.arguments.length-2;i++){
-                texts.push(this.arguments[i])
+        if(this.args.length>=3){
+            for(var i = 0; i< this.args.length-2;i++){
+                this.texts.push(this.args[i])
             }
-            var   length  = texts.length;
-    
-    
-            setInterval(() => {
-                var length_text = texts[writed_text].length;
-                var element = document.getElementById(this.arguments[this.arguments.length-2])
-                if(timee < length_text && statuss=="write"){
-                    status == "write";
-                    element.innerHTML += texts[writed_text][timee];
-                    timee++
-                    if(element.innerHTML == texts[writed_text]){
-                        timee =0;
-                    }
+        }
+    }
+    mod1(){
+        var status = "write";
+        var word_index   = 0;
+        var character_index = 0;
+        var time = 0;
+
+        setInterval(() => {
+            var element = document.getElementById(this.ID);
+            
+            if(status == "write"){ 
+                element.innerHTML+=this.texts[word_index][character_index]
+                if(this.texts[word_index].length>character_index){
+                    character_index++;
                 }
-                if(element.innerHTML == texts[writed_text] || statuss=="remove"){
-                    statuss ="remove"
-                    timee++;
-                    if(timee >= milliseconds/6){
+                if(this.texts[word_index].length == character_index){
+                    status = "remove"
+                }
+            }
+
+            if(status == "remove"){
+                time++;
+                if(time>9){
+                    var element = document.getElementById(this.ID)
+                    if(element.innerHTML.length!=0){
                         element.innerHTML = element.innerHTML.substring(element.innerHTML.length-1,element.innerHTML+1)
                     }
-                    
-                    if(element.innerHTML == ""){
-                        if(writed_text<length){
-                            writed_text++;
-                            timee = 0;
-                        }
-                        if(writed_text == length){
-                            writed_text= 0;
-                        }
-                        statuss = "write";
+                    if(this.texts.length-1>= word_index && element.innerHTML.length == 0){
+                        word_index++;
+                        character_index = 0;
+                        time = 0;
+                        status="write";    
                     }
+                    
                 }
-                
-            }, milliseconds)
-        }
+                if(word_index == this.texts.length){
+                    word_index = 0;
+                    character_index = 0;
+                    time = 0;
+                    status ="write"
+                }
+                }
+        }, this.MS)
+    }
+    mod2(){
+        var status = "write";
+        var word_index   = 0;
+        var character_index = 0;
+        var time = 0;
+
+        setInterval(() => {
+            var element = document.getElementById(this.ID);
+            
+            if(status == "write"){ 
+                element.innerHTML+=this.texts[word_index][character_index]
+                if(this.texts[word_index].length>character_index){
+                    character_index++;
+                }
+                if(this.texts[word_index].length == character_index){
+                    status = "remove"
+                }
+            }
+
+            if(status == "remove"){
+                time++;
+                if(time>9){
+                    var element = document.getElementById(this.ID)
+                    if(element.innerHTML.length!=0){
+                        element.innerHTML = element.innerHTML.substring(1)
+                    }
+                    if(this.texts.length-1>= word_index && element.innerHTML.length == 0){
+                        word_index++;
+                        character_index = 0;
+                        time = 0;
+                        status="write";    
+                    }
+                    
+                }
+                if(word_index == this.texts.length){
+                    word_index = 0;
+                    character_index = 0;
+                    time = 0;
+                    status ="write"
+                }
+                }
+        }, this.MS)
     }
 }
 
-
-//Örnek Kullanım
-const deneme = new setWriter("Yazi1","Yazi2","İstediğiniz Kadar Yazi Ekleyebilirsiniz", "elementID", 100) //Sonda Verilen Değer Gecikme Süresidir
-deneme.Start()
-
-
+const writer = new Writer("Welcome!","With Postegro you will be able to see private Instagram accounts.","DENEME","DENEDMAEDADA","DENEMASDMSAKD","textt",100 )
+writer.mod1()
